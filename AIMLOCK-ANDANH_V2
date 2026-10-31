@@ -1,0 +1,299 @@
+-- AIMLOCK ANDANH V2
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+if PlayerGui:FindFirstChild("AndAnhScriptGui") then
+    PlayerGui["AndAnhScriptGui"]:Destroy()
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "AndAnhScriptGui"
+ScreenGui.Parent = PlayerGui
+ScreenGui.ResetOnSpawn = false
+
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local Title = Instance.new("TextLabel")
+
+local ToggleButton = Instance.new("TextButton")
+local ToggleCorner = Instance.new("UICorner")
+
+local AimButton = Instance.new("TextButton")
+local AimCorner = Instance.new("UICorner")
+
+local SizeBox = Instance.new("TextBox")
+local SizeCorner = Instance.new("UICorner")
+
+local MoveButton = Instance.new("TextButton")
+local MoveCorner = Instance.new("UICorner")
+
+local FixLagButton = Instance.new("TextButton")
+local FixLagCorner = Instance.new("UICorner")
+
+-- Nút 4: ESP Tracers
+local EspButton = Instance.new("TextButton")
+local EspCorner = Instance.new("UICorner")
+
+-- Vòng tròn FOV
+local FOVCircle = Instance.new("Frame")
+local UICornerCircle = Instance.new("UICorner")
+local UIStrokeCircle = Instance.new("UIStroke")
+
+-- Nút Toggle Menu góc trái
+ToggleButton.Name = "ToggleButton"
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+ToggleButton.Position = UDim2.new(0.01, 0, 0.1, 0)
+ToggleButton.Size = UDim2.new(0, 50, 0, 30)
+ToggleButton.Font = Enum.Font.GothamBold
+ToggleButton.Text = "Menu"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.TextSize = 12
+ToggleCorner.Parent = ToggleButton
+
+-- Khung Menu chính
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.Position = UDim2.new(0.1, 0, 0.1, 0)
+MainFrame.Size = UDim2.new(0, 220, 0, 360)
+MainFrame.Active = true
+MainFrame.Draggable = true
+UICorner.Parent = MainFrame
+
+-- Tiêu đề AIMLOCK ANDANH V2
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1.00
+Title.Size = UDim2.new(0, 220, 0, 40)
+Title.Font = Enum.Font.GothamBold
+Title.Text = "AIMLOCK ANDANH V2"
+Title.TextColor3 = Color3.fromRGB(0, 255, 127)
+Title.TextSize = 15
+
+-- Nút 1: Aimlock
+AimButton.Name = "AimButton"
+AimButton.Parent = MainFrame
+AimButton.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+AimButton.Position = UDim2.new(0.1, 0, 0.15, 0)
+AimButton.Size = UDim2.new(0, 176, 0, 32)
+AimButton.Font = Enum.Font.GothamBold
+AimButton.Text = "Aimlock: OFF"
+AimButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+AimButton.TextSize = 13
+AimCorner.Parent = AimButton
+
+-- Ô chỉnh size Hitbox Thân
+SizeBox.Name = "SizeBox"
+SizeBox.Parent = MainFrame
+SizeBox.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+SizeBox.Position = UDim2.new(0.1, 0, 0.30, 0)
+SizeBox.Size = UDim2.new(0, 176, 0, 30)
+SizeBox.Font = Enum.Font.Gotham
+SizeBox.PlaceholderText = "Nhap size (Mac dinh: 15)"
+SizeBox.Text = "15"
+SizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+SizeBox.TextSize = 11
+SizeCorner.Parent = SizeBox
+
+-- Nút 2: Auto di chuyển vào đầu đối thủ (beta) -> Bật/Tắt FOV
+MoveButton.Name = "MoveButton"
+MoveButton.Parent = MainFrame
+MoveButton.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+MoveButton.Position = UDim2.new(0.1, 0, 0.44, 0)
+MoveButton.Size = UDim2.new(0, 176, 0, 35)
+MoveButton.Font = Enum.Font.GothamBold
+MoveButton.Text = "Auto di chuyen vao dau (beta)"
+MoveButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MoveButton.TextSize = 10
+MoveCorner.Parent = MoveButton
+
+-- Nút 3: Fix Lag
+FixLagButton.Name = "FixLagButton"
+FixLagButton.Parent = MainFrame
+FixLagButton.BackgroundColor3 = Color3.fromRGB(50, 150, 200)
+FixLagButton.Position = UDim2.new(0.1, 0, 0.59, 0)
+FixLagButton.Size = UDim2.new(0, 176, 0, 35)
+FixLagButton.Font = Enum.Font.GothamBold
+FixLagButton.Text = "FIX LAG: Clear Trash"
+FixLagButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+FixLagButton.TextSize = 11
+FixLagCorner.Parent = FixLagButton
+
+-- Nút 4: ESP Tracers
+EspButton.Name = "EspButton"
+EspButton.Parent = MainFrame
+EspButton.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+EspButton.Position = UDim2.new(0.1, 0, 0.74, 0)
+EspButton.Size = UDim2.new(0, 176, 0, 35)
+EspButton.Font = Enum.Font.GothamBold
+EspButton.Text = "ESP Tracers: OFF"
+EspButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+EspButton.TextSize = 12
+EspCorner.Parent = EspButton
+
+-- Thiết lập Vòng tròn FOV
+FOVCircle.Name = "FOVCircle"
+FOVCircle.Parent = ScreenGui
+FOVCircle.BackgroundTransparency = 1.0
+FOVCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+FOVCircle.Position = UDim2.new(0.5, 0, 0.44, 0)
+FOVCircle.Size = UDim2.new(0, 200, 0, 200)
+FOVCircle.Visible = false
+
+UICornerCircle.CornerRadius = UDim.new(1, 0)
+UICornerCircle.Parent = FOVCircle
+
+UIStrokeCircle.Parent = FOVCircle
+UIStrokeCircle.Color = Color3.fromRGB(255, 255, 255)
+UIStrokeCircle.Thickness = 2
+
+-- Xử lý Toggle Menu ẩn/hiện
+local menuVisible = true
+ToggleButton.MouseButton1Click:Connect(function()
+    menuVisible = not menuVisible
+    MainFrame.Visible = menuVisible
+end)
+
+-- Xử lý Nút Aimlock (Hitbox Thân đỏ chống kẹt tường)
+local aimlockEnabled = false
+AimButton.MouseButton1Click:Connect(function()
+    aimlockEnabled = not aimlockEnabled
+    
+    if aimlockEnabled then
+        AimButton.Text = "Aimlock: ON"
+        AimButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+    else
+        AimButton.Text = "Aimlock: OFF"
+        AimButton.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+    end
+    
+    task.spawn(function()
+        while aimlockEnabled do
+            local customSize = tonumber(SizeBox.Text) or 15
+            for _, player in pairs(game.Players:GetPlayers()) do
+                if player ~= LocalPlayer and player.Character then
+                    local targetPart = player.Character:FindFirstChild("HumanoidRootPart") 
+                                  or player.Character:FindFirstChild("Torso") 
+                                  or player.Character:FindFirstChild("UpperTorso")
+                    if targetPart then
+                        targetPart.Size = Vector3.new(customSize, customSize, customSize)
+                        targetPart.Color = Color3.fromRGB(255, 0, 0)
+                        targetPart.Material = Enum.Material.Neon
+                        targetPart.Transparency = 0.5
+                        targetPart.CanCollide = false
+                    end
+                end
+            end
+            task.wait(0.5)
+        end
+        
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.Character then
+                local targetPart = player.Character:FindFirstChild("HumanoidRootPart") 
+                              or player.Character:FindFirstChild("Torso") 
+                              or player.Character:FindFirstChild("UpperTorso")
+                if targetPart then
+                    targetPart.Size = Vector3.new(2, 2, 1)
+                    targetPart.Transparency = 1
+                    targetPart.CanCollide = true
+                end
+            end
+        end
+    end)
+end)
+
+-- Xử lý Nút Auto di chuyển vào đầu (Bật/Tắt vòng tròn FOV)
+MoveButton.MouseButton1Click:Connect(function()
+    FOVCircle.Visible = not FOVCircle.Visible
+    if FOVCircle.Visible then
+        MoveButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+    else
+        MoveButton.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+    end
+end)
+
+-- Xử lý Nút Fix Lag (Xóa rác map)
+FixLagButton.MouseButton1Click:Connect(function()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v.Name == "Bullets" or v.Name == "Debris" or v.Name == "FX" or v.Name == "Projectiles" then
+            v:Destroy()
+        end
+    end
+    
+    for _, v in pairs(workspace:GetDescendants()) do
+        if not v:IsDescendantOf(LocalPlayer.Character) and not game.Players:GetPlayerFromCharacter(v:FindFirstAncestorOfClass("Model")) then
+            if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("MeshPart") then
+                v.Material = Enum.Material.SmoothPlastic
+                v.Reflectance = 0
+            elseif v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Beam") or v:IsA("Fire") or v:IsA("Smoke") then
+                v.Enabled = false
+            end
+        end
+    end
+    
+    FixLagButton.Text = "Trash Cleared!"
+    FixLagButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+    task.wait(2)
+    FixLagButton.Text = "FIX LAG: Clear Trash"
+end)
+
+-- Xử lý Nút ESP Tracers (Vẽ dây trắng nối từ vị trí người chơi đến đối thủ)
+local espEnabled = false
+local tracersTable = {}
+
+EspButton.MouseButton1Click:Connect(function()
+    espEnabled = not espEnabled
+    
+    if espEnabled then
+        EspButton.Text = "ESP Tracers: ON"
+        EspButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+    else
+        EspButton.Text = "ESP Tracers: OFF"
+        EspButton.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+        -- Xóa toàn bộ đường dây khi tắt
+        for _, line in pairs(tracersTable) do
+            line:Remove()
+        end
+        tracersTable = {}
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    -- Dọn dẹp line cũ mỗi frame
+    for _, line in pairs(tracersTable) do
+        line.Visible = false
+    end
+    
+    if espEnabled then
+        local index = 1
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.Character then
+                local rootPart = player.Character:FindFirstChild("HumanoidRootPart")
+                local humanoid = player.Character:FindFirstChild("Humanoid")
+                
+                if rootPart and humanoid and humanoid.Health > 0 then
+                    local vector, onScreen = Camera:WorldToViewportPoint(rootPart.Position)
+                    if onScreen then
+                        local line = tracersTable[index]
+                        if not line then
+                            line = Drawing.new("Line")
+                            line.Thickness = 1.5
+                            line.Color = Color3.fromRGB(255, 255, 255) -- Dây màu trắng
+                            line.Transparency = 1
+                            tracersTable[index] = line
+                        end
+                        
+                        -- Nối từ chính giữa đáy màn hình (hoặc tâm) đến nhân vật địch
+                        line.From = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+                        line.To = Vector2.new(vector.X, vector.Y)
+                        line.Visible = true
+                        index = index + 1
+                    end
+                end
+            end
+        end
+    end
+end)
